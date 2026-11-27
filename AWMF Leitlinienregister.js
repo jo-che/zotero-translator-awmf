@@ -9,7 +9,7 @@
 	"inRepository": false,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2026-11-27 10:51:22"
+	"lastUpdated": "2026-11-27 11:15:57"
 }
 
 /*
@@ -131,15 +131,8 @@ function scrape(doc, url) {
 	let main = docs.find(d => /^Langfassung/i.test(d.title))
 		|| docs.find(d => /Leitlinie/i.test(d.title))
 		|| docs[0];
-	// The register serves its PDFs only to browsers that passed its bot check, so Zotero
-	// cannot download them itself. A link attachment opens the PDF in the browser instead.
 	if (main) {
-		item.attachments.push({
-			url: main.url,
-			title: 'Langfassung (PDF, im Browser öffnen)',
-			mimeType: 'application/pdf',
-			snapshot: false,
-		});
+		item.attachments.push({ url: main.url, title: 'Volltext PDF (' + main.title + ')', mimeType: 'application/pdf' });
 	}
 
 	let note = buildNote(rows, leading, docs);

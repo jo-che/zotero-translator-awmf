@@ -34,7 +34,7 @@ Eintragstyp **Bericht**:
 | Extra | `version: …` (wird beim Zitieren genutzt) und „Gültig bis“ |
 | Zusammenfassung | „Zielorientierung der Leitlinie“ |
 | Tags | Schlüsselwörter aus dem Register |
-| Anhang | Link auf die Langfassung (PDF), öffnet im Browser |
+| Anhang | Langfassung als PDF |
 | Notiz | beteiligte Fachgesellschaften, Adressaten, Patientenzielgruppe, Versorgungsbereich und Links zu allen weiteren Dokumenten (Leitlinienreport, Kurzfassung, Patienteninformationen …) |
 
 Im Zitat ergibt das z. B. „Behandlung von erwachsenen Patienten mit ambulant erworbener Pneumonie (S3-Leitlinie, AWMF-Register-Nr. 020-020)“.
@@ -42,7 +42,7 @@ Im Zitat ergibt das z. B. „Behandlung von erwachsenen Patienten mit ambulant e
 ## Einschränkungen
 
 - Nur **einzelne Detailseiten** werden unterstützt, kein Sammelimport aus der Trefferliste der Suche. Das Register ist eine JavaScript-Anwendung hinter einem Bot-Schutz; Zotero kann die Detailseiten nicht im Hintergrund laden.
-- **Kein automatischer PDF-Download:** Seit November 2026 liefert das Register auch die PDFs nur an Browser aus, die den Bot-Check bestanden haben. Zotero kann sie deshalb nicht selbst herunterladen. Der Eintrag bekommt stattdessen einen Link auf die Langfassung; das PDF im Browser öffnen und bei Bedarf von Hand in Zotero ablegen (z. B. per Drag-and-drop auf den Eintrag).
+- Der Bot-Schutz des Registers erfasst inzwischen auch die PDF-Dateien. Schlägt der PDF-Anhang fehl, die Seite neu laden und erneut speichern; notfalls das PDF im Browser öffnen und per Drag-and-drop auf den Eintrag ziehen.
 - Die Daten werden aus der angezeigten Seite gelesen. Ändert die AWMF das Seitenlayout, muss der Translator angepasst werden.
 - Getestet mit 020-020, 001-012, 048-013, 050-001 und nvl-006 (Stand November 2026).
 
