@@ -9,7 +9,7 @@
 	"inRepository": false,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2026-11-17 19:03:21"
+	"lastUpdated": "2026-11-27 10:51:22"
 }
 
 /*
@@ -123,19 +123,23 @@ function scrape(doc, url) {
 	let abstract = rowText(rows, /^Zielorientierung/);
 	if (abstract) item.abstractNote = abstract;
 
-	let keywords = rowText(rows, /^Schlüsselwörter/);
-	if (keywords) {
-		for (let kw of keywords.split(/\s*[,;]\s*/)) {
-			if (kw) item.tags.push(kw);
-		}
+	for (let kw of keywordList(rows)) {
+		item.tags.push(kw);
 	}
 
 	let docs = getDocuments(details);
 	let main = docs.find(d => /^Langfassung/i.test(d.title))
 		|| docs.find(d => /Leitlinie/i.test(d.title))
 		|| docs[0];
+	// The register serves its PDFs only to browsers that passed its bot check, so Zotero
+	// cannot download them itself. A link attachment opens the PDF in the browser instead.
 	if (main) {
-		item.attachments.push({ url: main.url, title: 'Volltext PDF (' + main.title + ')', mimeType: 'application/pdf' });
+		item.attachments.push({
+			url: main.url,
+			title: 'Langfassung (PDF, im Browser öffnen)',
+			mimeType: 'application/pdf',
+			snapshot: false,
+		});
 	}
 
 	let note = buildNote(rows, leading, docs);
@@ -182,6 +186,26 @@ function societies(rows, labelRe) {
 		}
 	}
 	return names;
+}
+
+function keywordList(rows) {
+	let tags = [];
+	let seen = [];
+	for (let cell of rowCells(rows, /^Schlüsselwörter/)) {
+		// Lines are separated by <br>; a line may start with a language label such as "Englisch:".
+		let lines = cell.innerHTML.split(/<br\s*\/?>/i).map(l => ZU.unescapeHTML(l.replace(/<[^>]+>/g, '')));
+		for (let line of lines) {
+			line = ZU.trimInternal(line).replace(/^(Englisch|English|Deutsch|German)\s*:\s*/i, '');
+			for (let kw of line.split(/\s*[,;]\s*/)) {
+				kw = ZU.trimInternal(kw);
+				if (kw && !seen.includes(kw.toLowerCase())) {
+					seen.push(kw.toLowerCase());
+					tags.push(kw);
+				}
+			}
+		}
+	}
+	return tags;
 }
 
 function coordinators(rows) {
